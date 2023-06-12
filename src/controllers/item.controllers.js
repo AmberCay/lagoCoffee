@@ -63,4 +63,6 @@ function getItem(req, response) {
     }
 }
 
+// Amber you silly goose, code a put, post and delete function even if only the store owner would ahve access to it
+
 module.exports = { getStart, getCoffee, getTea, getItem }
