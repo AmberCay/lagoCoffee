@@ -6,4 +6,8 @@ router.get("/", itemsCTRL.getStart)
 
 router.get("/coffee", itemsCTRL.getCoffee)
 
+router.get("/tea", itemsCTRL.getTea)
+
+router.get("/item", itemsCTRL.getItem)
+
 module.exports = router
