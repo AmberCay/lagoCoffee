@@ -65,4 +65,8 @@ function getItem(req, response) {
 
 // Amber you silly goose, code a put, post and delete function even if only the store owner would ahve access to it
 
-module.exports = { getStart, getCoffee, getTea, getItem }
+function postCoffee(req, response) {
+    let sql = "INSERT INTO coffee.coffee (name, price, origin, description, image) VALUE ('" + req.body.name +", " + ");"
+}
+
+module.exports = { getStart, getCoffee, getTea, getItem}
