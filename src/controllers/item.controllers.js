@@ -35,6 +35,7 @@ function getTea(req, response) {
 
 function getItem(req, response) {
     console.log(req.query);
+    let answer
     if (req.query.tea_id != null) {
         let params = [req.query.tea_id]
         let sql = "SELECT * FROM tea.coffee WHERE tea_id = ?"
@@ -66,7 +67,21 @@ function getItem(req, response) {
 // Amber you silly goose, code a put, post and delete function even if only the store owner would ahve access to it
 
 function postCoffee(req, response) {
-    let sql = "INSERT INTO coffee.coffee (name, price, origin, description, image) VALUE ('" + req.body.name +", " + ");"
+    let sql = "INSERT INTO coffee.coffee (name, price, origin, description, image) VALUE ('" + 
+    req.body.name + ", " + 
+    req.body.price + ", " + 
+    req.body.origin + ", " + 
+    req.body.description + ", " + 
+    req.body.image + ");";
+    let answer
+    connection.query(sql, (err,res) => {
+        if (err) {
+            answer = { error: true, code: 200, message: "bad DB connection", data: null }
+        }
+        else {
+            answer = { error: false, code: 200, message: String(res.insertId), data: null }
+        }
+    })
 }
 
-module.exports = { getStart, getCoffee, getTea, getItem}
+module.exports = { getStart, getCoffee, getTea, getItem, postCoffee }
