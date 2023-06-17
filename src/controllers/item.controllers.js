@@ -84,4 +84,108 @@ function postCoffee(req, response) {
     })
 }
 
-module.exports = { getStart, getCoffee, getTea, getItem, postCoffee }
+function postTea(req, response) {
+    let sql = "INSERT INTO tea.coffee (name, price, origin, description, image) VALUE ('" + 
+    req.body.name + ", " + 
+    req.body.price + ", " + 
+    req.body.origin + ", " + 
+    req.body.description + ", " + 
+    req.body.image + ");";
+    let answer
+    connection.query(sql, (err,res) => {
+        if (err) {
+            answer = { error: true, code: 200, message: "bad DB connection", data: null }
+        }
+        else {
+            answer = { error: false, code: 200, message: String(res.insertId), data: null }
+        }
+    })
+}
+
+function putCoffee(req, response) {
+    let params = [
+        req.body.name,
+        req.body.price,
+        req.body.origin,
+        req.body.description,
+        req.body.image,
+        req.body.coffee_id
+    ]
+    let sql = "UPDATE coffee.coffee SET name = COALESCE(?, name), COALESCE(?, price), COALESCE(?, origin), COALESCE(?, description), COALESCE(?, image) WHERE (coffee_id = ?);";
+    let answer;
+    connection.query(sql, params, (err, res) => {
+        console.log(res);
+        if (err) {
+            answer = { error: true, code: 200, message: "bad DB connection", data: null }
+        } 
+        else if (res.affectedRows != 0 ) {
+            answer = { error: false, code: 200, message: String(res.affectedRows), data: null }
+        }
+        else {
+            answer = { error: true, code: 200, message: "0", data: null};
+        }
+        response.send(answer)
+    })
+}
+
+function putTea(req, response) {
+    let params = [
+        req.body.name,
+        req.body.price,
+        req.body.origin,
+        req.body.description,
+        req.body.image,
+        req.body.tea_id
+    ]
+    let sql = "UPDATE tea.coffee SET name = COALESCE(?, name), COALESCE(?, price), COALESCE(?, origin), COALESCE(?, description), COALESCE(?, image) WHERE (coffee_id = ?);";
+    let answer;
+    connection.query(sql, params, (err, res) => {
+        console.log(res);
+        if (err) {
+            answer = { error: true, code: 200, message: "bad DB connection", data: null }
+        } 
+        else if (res.affectedRows != 0 ) {
+            answer = { error: false, code: 200, message: String(res.affectedRows), data: null }
+        }
+        else {
+            answer = { error: true, code: 200, message: "0", data: null};
+        }
+        response.send(answer)
+    })
+}
+
+function deleteCoffee (req, response) {
+    let params = [req.body.coffee_id];
+    let sql = "DELETE FROM coffee.coffee WHERE coffee_id = ?";
+    let answer;
+    connection.query(sql, params, (err, res) => {
+        if (err) {
+            answer = { error: true, code: 200, message: "bad DB connection", data: null }
+        }
+        else if (res.affectedRows === 1) {
+            answer = { error: false, code: 200, message: String(res.affectedRows), data: null }
+        }
+        else {
+            answer = { error: true, code: 200, message: "0", data: null }
+        }
+    })
+}
+
+function deleteTea (req, response) {
+    let params = [req.body.tea_id];
+    let sql = "DELETE FROM tea.coffee WHERE tea_id = ?";
+    let answer;
+    connection.query(sql, params, (err, res) => {
+        if (err) {
+            answer = { error: true, code: 200, message: "bad DB connection", data: null }
+        }
+        else if (res.affectedRows === 1) {
+            answer = { error: false, code: 200, message: String(res.affectedRows), data: null }
+        }
+        else {
+            answer = { error: true, code: 200, message: "0", data: null }
+        }
+    })
+}
+
+module.exports = { getStart, getCoffee, getTea, getItem, postCoffee, postTea, putCoffee, deleteCoffee, deleteTea }
