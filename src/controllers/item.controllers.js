@@ -6,7 +6,7 @@ function getStart(req, res) {
 }
 
 function getCoffee(req, response) {
-    let sql = "SELECT * FROM coffee.coffee;";
+    let sql = "SELECT * FROM coffee.coffee WHERE class = 'coffee';";
     let answer;
     connection.query(sql, (err, res) => {
         if (err) {
@@ -20,7 +20,7 @@ function getCoffee(req, response) {
 }
 
 function getTea(req, response) {
-    let sql = "SELECT * FROM tea.coffee;";
+    let sql = "SELECT * FROM tea.coffee WHERE class = 'tea';";
     let answer;
     connection.query(sql, (err, res) => {
         if (err) {
@@ -32,6 +32,8 @@ function getTea(req, response) {
         response.send(answer)
     })
 }
+
+// update get item to fit new db
 
 function getItem(req, response) {
     console.log(req.query);
@@ -66,6 +68,8 @@ function getItem(req, response) {
 
 // Amber you silly goose, code a put, post and delete function even if only the store owner would ahve access to it
 
+// To the post function you must add a class for posting wither coffee or tea
+
 function postCoffee(req, response) {
     let sql = "INSERT INTO coffee.coffee (name, price, origin, description, image) VALUE ('" + 
     req.body.name + ", " + 
@@ -73,7 +77,7 @@ function postCoffee(req, response) {
     req.body.origin + ", " + 
     req.body.description + ", " + 
     req.body.image + ");";
-    let answer
+    let answer;
     connection.query(sql, (err,res) => {
         if (err) {
             answer = { error: true, code: 200, message: "bad DB connection", data: null }
@@ -168,6 +172,7 @@ function deleteCoffee (req, response) {
         else {
             answer = { error: true, code: 200, message: "0", data: null }
         }
+        response.send(answer)
     })
 }
 
